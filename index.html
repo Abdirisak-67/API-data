@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Display API Data</title>
+</head>
+<body>
+
+    <h1>Comments</h1>
+    <div id="dataContainer"></div> <!-- Element si aan xogta ugu soo bandhigno -->
+
+    <script>
+        const getData = async () => {
+            const request = await fetch('https://jsonplaceholder.typicode.com/comments');
+            const response = await request.json();
+            return response; // Return the data
+        };
+
+        getData().then(data => {
+            // Select the container where we want to display the data
+            const dataContainer = document.getElementById('dataContainer');
+            
+            // Loop through the data and create HTML content
+            data.forEach(comment => {
+                const commentElement = document.createElement('div');
+                commentElement.classList.add('comment');
+                commentElement.innerHTML = `
+                    <h3>${comment.name}</h3>
+                    <p><strong>Email:</strong> ${comment.email}</p>
+                    <p>${comment.body}</p>
+                    <hr>
+                `;
+                // Append the comment to the container
+                dataContainer.appendChild(commentElement);
+            });
+        }).catch(err => {
+            console.error("Error fetching data:", err);
+        });
+    </script>
+
+</body>
+</html>
